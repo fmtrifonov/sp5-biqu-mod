@@ -1,0 +1,277 @@
+# encoding: utf-8
+# 2022 R2
+SetScriptVersion(Version="22.2.192")
+template1 = GetTemplate(TemplateName="Geometry")
+system1 = template1.CreateSystem()
+template2 = GetTemplate(
+    TemplateName="Fluid Flow",
+    Solver="CFX")
+system2 = template2.CreateSystem(
+    Position="Right",
+    RelativeTo=system1)
+geometryComponent1 = system2.GetComponent(Name="Geometry")
+geometryComponent2 = system1.GetComponent(Name="Geometry")
+geometryComponent1.ReplaceWithShare(
+    TargetSystem=system2,
+    ComponentToShare=geometryComponent2,
+    SourceSystem=system1)
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.SetFile(FilePath="F:/cad designs/Sapphire Plus/weird duct/air-1-weird.stp")
+meshComponent1 = system2.GetComponent(Name="Mesh")
+meshComponent1.Refresh()
+mesh1 = system2.GetContainer(ComponentName="Mesh")
+mesh1.Edit()
+mesh1.Exit()
+geometry1.SetFile(FilePath="F:/cad designs/Sapphire Plus/weird duct/air-2-weird.stp")
+meshComponent1.Refresh()
+mesh1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+mesh1.Exit()
+Save(Overwrite=True)
+meshComponent1.Update(AllDependencies=True)
+setup1 = system2.GetContainer(ComponentName="Setup")
+setup1.Edit()
+setup1.SendCommand(Command="""VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = 0.0399878, -0.0314907, 0.0223279
+    Scale = 16.0047
+    Pan = 0, 0
+    Rotation Quaternion = -0.32204, 0.0624355, 0.15013, 0.932676
+    
+  END
+
+END
+
+VIEW:View 1
+  Light Angle = 50, 110
+END
+
+> update
+FLOW: Flow Analysis 1
+  DOMAIN: Default Domain
+&replace     BOUNDARY: Boundary 1
+      Boundary Type = OPENING
+      Interface Boundary = Off
+      Location = F1713.1933,F1730.1933,F1731.1933,F1732.1933,F1733.1933,F1780.1933
+      BOUNDARY CONDITIONS: 
+        FLOW DIRECTION: 
+          Option = Normal to Boundary Condition
+        END # FLOW DIRECTION:
+        FLOW REGIME: 
+          Option = Subsonic
+        END # FLOW REGIME:
+        MASS AND MOMENTUM: 
+          Option = Opening Pressure and Direction
+          Relative Pressure = 0 [Pa]
+        END # MASS AND MOMENTUM:
+        TURBULENCE: 
+          Option = Medium Intensity and Eddy Viscosity Ratio
+        END # TURBULENCE:
+      END # BOUNDARY CONDITIONS:
+    END # BOUNDARY:Boundary 1
+  END # DOMAIN:Default Domain
+END # FLOW:Flow Analysis 1
+
+
+PARAMETERIZATION:
+END""")
+setup1.SendCommand(Command="""VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = 0.0378313, 0.0120606, 0.0224383
+    Scale = 25.5859
+    Pan = 0, 0
+    Rotation Quaternion = -0.407457, -0.0015238, 0.0564687, 0.9115
+    
+  END
+
+END
+
+> update
+FLOW: Flow Analysis 1
+  DOMAIN: Default Domain
+&replace     BOUNDARY: Boundary 2
+      Boundary Type = INLET
+      Interface Boundary = Off
+      Location = F1712.1933
+      BOUNDARY CONDITIONS: 
+        FLOW REGIME: 
+          Option = Subsonic
+        END # FLOW REGIME:
+        MASS AND MOMENTUM: 
+          Normal Speed = 1.65 [m s^-1]
+          Option = Normal Speed
+        END # MASS AND MOMENTUM:
+        TURBULENCE: 
+          Option = Medium Intensity and Eddy Viscosity Ratio
+        END # TURBULENCE:
+      END # BOUNDARY CONDITIONS:
+    END # BOUNDARY:Boundary 2
+  END # DOMAIN:Default Domain
+END # FLOW:Flow Analysis 1
+
+
+PARAMETERIZATION:
+END""")
+setup1.SendCommand(Command="""FLOW: Flow Analysis 1
+&replace   DOMAIN: Default Domain
+    Coord Frame = Coord 0
+    Domain Type = Fluid
+    Location = B1933
+    BOUNDARY: Boundary 1
+      Boundary Type = OPENING
+      Interface Boundary = Off
+      Location = F1713.1933,F1730.1933,F1731.1933,F1732.1933,F1733.1933,F1780.1933
+      BOUNDARY CONDITIONS: 
+        FLOW DIRECTION: 
+          Option = Normal to Boundary Condition
+        END # FLOW DIRECTION:
+        FLOW REGIME: 
+          Option = Subsonic
+        END # FLOW REGIME:
+        MASS AND MOMENTUM: 
+          Option = Opening Pressure and Direction
+          Relative Pressure = 0 [Pa]
+        END # MASS AND MOMENTUM:
+        TURBULENCE: 
+          Option = Medium Intensity and Eddy Viscosity Ratio
+        END # TURBULENCE:
+      END # BOUNDARY CONDITIONS:
+    END # BOUNDARY:Boundary 1
+    BOUNDARY: Boundary 2
+      Boundary Type = INLET
+      Interface Boundary = Off
+      Location = F1712.1933
+      BOUNDARY CONDITIONS: 
+        FLOW REGIME: 
+          Option = Subsonic
+        END # FLOW REGIME:
+        MASS AND MOMENTUM: 
+          Normal Speed = 1.65 [m s^-1]
+          Option = Normal Speed
+        END # MASS AND MOMENTUM:
+        TURBULENCE: 
+          Option = Medium Intensity and Eddy Viscosity Ratio
+        END # TURBULENCE:
+      END # BOUNDARY CONDITIONS:
+    END # BOUNDARY:Boundary 2
+    BOUNDARY: Default Domain Default
+      Boundary Type = WALL
+      Create Other Side = Off
+      Interface Boundary = Off
+      Location = F1705.1933,F1706.1933,F1707.1933,F1708.1933,F1709.1933,F1710.1933,F1711.1933,F1714.1933,F1715.1933,F1716.1933,F1717.1933,F1718.1933,F1719.1933,F1720.1933,F1721.1933,F1722.1933,F1723.1933,F1724.1933,F1725.1933,F1726.1933,F1727.1933,F1728.1933,F1729.1933,F1734.1933,F1735.1933,F1736.1933,F1737.1933,F1738.1933,F1739.1933,F1740.1933,F1741.1933,F1742.1933,F1743.1933,F1744.1933,F1745.1933,F1746.1933,F1747.1933,F1748.1933,F1749.1933,F1752.1933,F1754.1933,F1755.1933,F1756.1933,F1757.1933,F1758.1933,F1759.1933,F1760.1933,F1761.1933,F1762.1933,F1763.1933,F1764.1933,F1765.1933,F1766.1933,F1767.1933,F1768.1933,F1769.1933,F1770.1933,F1771.1933,F1772.1933,F1773.1933,F1774.1933,F1775.1933,F1776.1933,F1777.1933,F1778.1933,F1779.1933,F1781.1933,F1782.1933,F1783.1933,F1784.1933,F1785.1933,F1786.1933,F1787.1933,F1788.1933,F1789.1933,F1790.1933,F1791.1933,F1792.1933,F1793.1933,F1794.1933,F1795.1933,F1796.1933,F1797.1933,F1798.1933,F1799.1933,F1800.1933,F1801.1933,F1802.1933,F1803.1933,F1804.1933,F1805.1933,F1806.1933,F1807.1933,F1808.1933,F1809.1933,F1810.1933,F1811.1933,F1812.1933,F1813.1933,F1814.1933,F1815.1933,F1816.1933,F1817.1933,F1818.1933,F1819.1933,F1820.1933,F1821.1933,F1822.1933,F1823.1933,F1824.1933,F1825.1933,F1826.1933,F1827.1933,F1828.1933,F1829.1933,F1830.1933,F1831.1933,F1832.1933,F1833.1933,F1834.1933,F1835.1933,F1836.1933,F1837.1933,F1838.1933,F1839.1933,F1840.1933,F1841.1933,F1842.1933,F1843.1933,F1844.1933,F1845.1933,F1846.1933,F1847.1933,F1848.1933,F1849.1933,F1850.1933,F1851.1933,F1852.1933,F1853.1933,F1854.1933,F1855.1933,F1856.1933,F1857.1933,F1858.1933,F1859.1933,F1860.1933,F1861.1933,F1862.1933,F1863.1933,F1864.1933
+      BOUNDARY CONDITIONS: 
+        MASS AND MOMENTUM: 
+          Option = No Slip Wall
+        END # MASS AND MOMENTUM:
+        WALL ROUGHNESS: 
+          Option = Smooth Wall
+        END # WALL ROUGHNESS:
+      END # BOUNDARY CONDITIONS:
+    END # BOUNDARY:Default Domain Default
+    DOMAIN MODELS: 
+      BUOYANCY MODEL: 
+        Option = Non Buoyant
+      END # BUOYANCY MODEL:
+      DOMAIN MOTION: 
+        Option = Stationary
+      END # DOMAIN MOTION:
+      MESH DEFORMATION: 
+        Option = None
+      END # MESH DEFORMATION:
+      REFERENCE PRESSURE: 
+        Reference Pressure = 1 [atm]
+      END # REFERENCE PRESSURE:
+    END # DOMAIN MODELS:
+    FLUID DEFINITION: Fluid 1
+      Material = Air at 25 C
+      Option = Material Library
+      MORPHOLOGY: 
+        Option = Continuous Fluid
+      END # MORPHOLOGY:
+    END # FLUID DEFINITION:Fluid 1
+    FLUID MODELS: 
+      COMBUSTION MODEL: 
+        Option = None
+      END # COMBUSTION MODEL:
+      HEAT TRANSFER MODEL: 
+        Fluid Temperature = 25 [C]
+        Option = Isothermal
+      END # HEAT TRANSFER MODEL:
+      THERMAL RADIATION MODEL: 
+        Option = None
+      END # THERMAL RADIATION MODEL:
+      TURBULENCE MODEL: 
+        Option = SST
+      END # TURBULENCE MODEL:
+      TURBULENT WALL FUNCTIONS: 
+        Option = Automatic
+      END # TURBULENT WALL FUNCTIONS:
+    END # FLUID MODELS:
+  END # DOMAIN:Default Domain
+END # FLOW:Flow Analysis 1
+
+
+PARAMETERIZATION:
+END""")
+Save(Overwrite=True)
+setup1.Exit()
+solution1 = system2.GetContainer(ComponentName="Solution")
+solution1.SetExecutionControl(CCL=r"""&replace SIMULATION CONTROL:
+  EXECUTION CONTROL:
+    EXECUTABLE SELECTION:
+      Double Precision = Off
+      Large Problem = Off
+    END
+    INTERPOLATOR STEP CONTROL:
+      Runtime Priority = Standard
+      MEMORY CONTROL:
+        Memory Allocation Factor = 1.0
+        Option = Model Based
+      END
+    END
+    PARTITIONER STEP CONTROL:
+      Multidomain Option = Automatic
+      Runtime Priority = Standard
+      MEMORY CONTROL:
+        Memory Allocation Factor = 1.0
+        Option = Model Based
+      END
+      PARTITION SMOOTHING:
+        Maximum Partition Smoothing Sweeps = 100
+        Option = Smooth
+      END
+      PARTITIONING TYPE:
+        MeTiS Type = k-way
+        Option = MeTiS
+        Partition Size Rule = Automatic
+      END
+    END
+    RUN DEFINITION:
+      Run Mode = Full
+      Solver Input File = F:\cad designs\Sapphire Plus\weird duct\weird duct_files\dp0\CFX\CFX\Fluid Flow CFX.def
+    END
+    SOLVER STEP CONTROL:
+      Runtime Priority = Standard
+      MEMORY CONTROL:
+        Memory Allocation Factor = 1.0
+        Option = Model Based
+      END
+      PARALLEL ENVIRONMENT:
+        Number of Processes = 10
+        Start Method = Microsoft MPI Local Parallel
+      END
+    END
+  END
+END
+""")
+solutionComponent1 = system2.GetComponent(Name="Solution")
+solutionComponent1.Update(Force=True)
+solution1.Exit()
+Save(Overwrite=True)
